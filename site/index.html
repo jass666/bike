@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pulsar N250 SS · Owner Hub</title>
+<style>
+:root{--bg:#f4f2ee;--card:#fff;--tx:#1c1c1e;--mut:#6b6b70;--ac:#e2231a;--bd:#dedad2;--ok:#1f9d55;--wn:#d98a00;--bad:#d62b2b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121214;--card:#1d1d21;--tx:#ececee;--mut:#9a9aa2;--bd:#303036;--ac:#ff4a3f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121214;--card:#1d1d21;--tx:#ececee;--mut:#9a9aa2;--bd:#303036;--ac:#ff4a3f;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:18px 16px 8px;max-width:900px;margin:auto}
+h1{margin:0;font-size:22px}h1 b{color:var(--ac)}
+header p{margin:2px 0 0;color:var(--mut);font-size:13px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;display:flex;gap:6px;overflow-x:auto;padding:8px 16px;max-width:900px;margin:auto}
+nav button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:7px 13px;border-radius:20px;font:inherit;font-size:13px;cursor:pointer}
+nav button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+main{max-width:900px;margin:auto;padding:4px 16px 40px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
+h2{font-size:16px;margin:0 0 8px}h3{font-size:14px;margin:12px 0 4px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+label{font-size:12px;color:var(--mut);display:block}
+input,select{font:inherit;padding:7px 9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);max-width:100%}
+.btn{background:var(--ac);color:#fff;border:0;padding:8px 14px;border-radius:8px;font:inherit;cursor:pointer}
+.btn.g{background:transparent;color:var(--ac);border:1px solid var(--ac);padding:4px 9px;font-size:12px}
+.big{font-size:22px;font-weight:700}.mut{color:var(--mut);font-size:13px}
+.bar{height:7px;background:var(--bd);border-radius:5px;overflow:hidden;margin:4px 0}.bar i{display:block;height:100%;background:var(--ok)}
+.it{padding:8px 0;border-top:1px solid var(--bd)}.it:first-of-type{border-top:0}
+.it .top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--bd);white-space:nowrap}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px 16px}
+.kv{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px dashed var(--bd);font-size:13px}.kv span:first-child{color:var(--mut)}
+details{border-bottom:1px solid var(--bd);padding:9px 0}summary{cursor:pointer;font-weight:600}details p{margin:6px 0 2px;color:var(--mut)}
+.chk{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--bd)}.chk input{margin-top:4px}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;color:#fff}
+.st-ok{background:var(--ok)}.st-wn{background:var(--wn)}.st-bad{background:var(--bad)}
+</style></head><body>
+<header><h1>Pulsar <b>N250 SS</b> · Owner Hub</h1><p>Built from the Owner’s Manual (Doc. 71120287 Rev. 00, Aug 2026). <span id="sync">Saved on this device</span></p></header>
+<nav id="tabs"></nav>
+<main>
+<section id="t-track">
+<div class="card"><h2>Your bike</h2><div class="row">
+<div><label>Sale / delivery date</label><input type="date" id="sale"></div>
+<div><label>Current odometer (km)</label><input type="number" id="odo" min="0" style="width:130px"></div>
+<button class="btn" id="saveOdo">Update</button></div></div>
+<div class="card" id="next"></div>
+<div class="card"><h2>Km-based maintenance</h2><div class="mut">Tap “Done now” after the job so the counter restarts from your current odometer.</div><div id="items"></div></div>
+<div class="card"><h2>Log an entry</h2><div class="row">
+<div><label>Date</label><input type="date" id="ld"></div>
+<div><label>Odometer</label><input type="number" id="lk" style="width:110px"></div>
+<div><label>Type</label><select id="lt"><option>Service</option><option>Chain lube</option><option>Oil top-up</option><option>Repair</option><option>Other</option></select></div>
+<div style="flex:1;min-width:140px"><label>Note</label><input id="ln" style="width:100%" placeholder="Dealer, cost, UCN…"></div>
+<button class="btn" id="addLog">Add</button></div>
+<div class="sc" style="margin-top:10px"><table id="logs"></table></div></div>
+</section>
+
+<section id="t-sched">
+<div class="card"><h2>Service schedule</h2><div class="mut">Whichever comes first, km or days. Free: 1st–3rd. Then every 5,000 km or 120 days from last service. Skipping a service or using non-recommended oil can void warranty.</div>
+<div class="sc"><table id="svcTable"></table></div></div>
+<div class="card"><h2>Interval cheat-sheet</h2><div class="sc"><table id="itemTable"></table></div></div>
+<div class="card"><h2>What is done at each service</h2><div class="row"><div><label>Service #</label><select id="sn"></select></div></div><div class="mut">C check · A adjust · R replace · CL clean · L lubricate · T tighten. Source: manual pp. 46–53.</div><div class="sc"><table id="mx"></table></div></div>
+<div class="card"><h2>Checked at every service</h2><div class="mut">Water wash, steering play, clutch cable play, headlight focus, all lights/switches/horn, tyre pressure, mirrors, fasteners (axles, swing arm, engine mounts, footrests), battery terminals, chain clean/lube/adjust, fault-code check, brake pad wear and fluid level, USB port, starter-motor and fuel-tank drain holes.</div></div>
+</section>
+
+<section id="t-ride">
+<div class="card"><h2>Running-in: first 2,000 km (max km/h)</h2><div class="sc"><table>
+<tr><th>Km</th><th>1st</th><th>2nd</th><th>3rd</th><th>4th</th><th>5th</th><th>6th</th></tr>
+<tr><td>0–1,000</td><td>20</td><td>32</td><td>42</td><td>54</td><td>64</td><td>70</td></tr>
+<tr><td>1,000–2,000</td><td>32</td><td>50</td><td>67</td><td>84</td><td>101</td><td>110</td></tr></table></div>
+<p class="mut">Don’t race the engine or pull away right after starting; idle about a minute so oil reaches the engine.</p></div>
+<div class="card"><h2>Downshift speeds (km/h, max)</h2><div class="sc"><table><tr><th>2→1</th><th>3→2</th><th>4→3</th><th>5→4</th><th>6→5</th></tr><tr><td>34</td><td>53</td><td>71</td><td>90</td><td>108</td></tr></table></div></div>
+<div class="card"><h2>Ride modes</h2>
+<div class="kv"><span>Sport</span><span>Sharpest throttle; Sport Shift and 0–60 timer</span></div>
+<div class="kv"><span>Road (default)</span><span>Balanced, good economy</span></div>
+<div class="kv"><span>Rain</span><span>Softer power for slippery roads</span></div>
+<div class="kv"><span>Off-road</span><span>Off-road ABS, TC can be turned off</span></div>
+<div class="kv"><span>Tour</span><span>Balanced, plus Tour trip and DTE</span></div>
+<p class="mut">Change: hold the upward toggle 3 s, pick a mode, press SET. Close the throttle fully first.</p></div>
+<div class="card"><h2>Specs</h2><div class="g2" id="specs"></div></div>
+</section>
+
+<section id="t-checks">
+<div class="card"><h2>Daily pre-ride checks</h2><div class="mut">Ticks reset each day.</div><div id="chks"></div></div>
+</section>
+
+<section id="t-faq">
+<div class="card"><input id="q" placeholder="Search FAQs…" style="width:100%"><div id="faq"></div></div>
+</section>
+
+<section id="t-warn">
+<div class="card"><h2>Warning lights</h2><div class="sc"><table id="wl"></table></div>
+<p class="mut">If low oil pressure, malfunction or ABS lights come on while riding, go to the nearest Bajaj authorised workshop.</p></div>
+<div class="card"><h2>Warranty and contacts</h2>
+<div class="kv"><span>Bike</span><span>5 years or 75,000 km (first owner only)</span></div>
+<div class="kv"><span>Battery</span><span>18 months</span></div>
+<div class="kv"><span>Tyres</span><span>Claim with tyre maker (BAL covers imported tyres only)</span></div>
+<div class="kv"><span>Customer care</span><span>7219821111, daily 9 am–8 pm</span></div>
+<div class="kv"><span>Claims</span><span>Via authorised dealer with the original manual; shocks and speedometer follow the maker’s decision</span></div>
+<div class="kv"><span>Email</span><span>customerservice@bajajauto.co.in</span></div>
+<h3>Needed for warranty</h3><p class="mut">All 3 free services on time; paid services every 5,000 km / 120 days; only authorised dealers; Bajaj 20W50 oil at the right intervals; periodic parts replaced; manual carried to the dealer.</p>
+<h3>Not covered</h3><p class="mut">Wear parts (clutch plates, chain, sprockets, pads, plugs, cables), bulbs and rubber parts, consumables, flood or water-ingress damage, bad fuel, extra electrical accessories (bigger horn, remote), loud silencers or wider tyres, racing and commercial use, paint damage from external causes (only blistering or peeling is covered), chrome rust in coastal or acidic areas, blue/yellow silencer tint, crankcase oxidation, accident or misuse, unauthorised modifications.</p></div>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s),KEY="n250hub";
+let S={sale:"",odo:0,logs:[],done:{},chk:{d:"",on:[]},ts:{},dt:{},del:{}};
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+S.ts=S.ts||{};S.dt=S.dt||{};S.del=S.del||{};
+S.logs.forEach(l=>{if(!l.id)l.id="L"+[l.date,l.km,l.type,l.note||""].join("|")});
+const stable=o=>JSON.stringify(o,(k,v)=>v&&typeof v==="object"&&!Array.isArray(v)?Object.keys(v).sort().reduce((a,x)=>(a[x]=v[x],a),{}):v);
+const nid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function merge(a,b){const r=JSON.parse(JSON.stringify(a));
+ ["sale","odo"].forEach(k=>{if(((b.ts||{})[k]||0)>((a.ts||{})[k]||0)){r[k]=b[k];r.ts[k]=b.ts[k]}});
+ r.del=Object.assign({},b.del,a.del);
+ const m={};(a.logs||[]).concat(b.logs||[]).forEach(l=>{if(l.id&&!r.del[l.id])m[l.id]=l});
+ r.logs=Object.keys(m).sort().map(k=>m[k]);
+ Object.keys(b.dt||{}).forEach(k=>{if((b.dt[k]||0)>(r.dt[k]||0)){r.done[k]=b.done[k];r.dt[k]=b.dt[k]}});
+ if(b.chk&&b.chk.d===today()&&(a.chk.d!==today()||(b.chk.t||0)>(a.chk.t||0)))r.chk=b.chk;
+ return r}
+let ref=null,busy=false,again=false,lastSent="",pt;
+const setSync=t=>{const e=document.querySelector("#sync");if(e)e.textContent=t};
+async function push(){if(!ref)return;if(busy){again=true;return}busy=true;
+ try{const x=stable(S);if(x!==lastSent){await ref.set(JSON.parse(x));lastSent=x}setSync("Synced ✓")}catch(e){setSync("Sync error, saved on this device")}
+ busy=false;if(again){again=false;push()}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}clearTimeout(pt);pt=setTimeout(push,700)};
+async function initCloud(){
+ try{if(!window.claude||!claude.use)return;
+  const db=await claude.use("db"),user=await claude.use("user"),uid=db&&user?await user.id():null;
+  if(!uid){setSync("Saved on this device only");return}
+  ref=db.collection("data/users/"+uid).doc("n250");setSync("Connecting…");
+  const tm=setTimeout(()=>setSync("Cloud not reachable yet, saved on this device"),10000);
+  ref.onSnapshot(snap=>{clearTimeout(tm);const rem=snap.exists?snap.data():null;
+   if(rem){const m=merge(S,rem);if(stable(m)!==stable(S)){S=m;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}renderAll();document.querySelectorAll("#chks input").forEach(x=>x.checked=S.chk.on.includes(+x.dataset.c))}lastSent=stable(rem)}
+   if(!rem||stable(S)!==stable(rem))push();else setSync("Synced ✓")},()=>setSync("Sync unavailable, saved on this device"))
+ }catch(e){setSync("Saved on this device only")}}
+const today=()=>new Date().toISOString().slice(0,10);
+const addDays=(s,d)=>{const x=new Date(s+"T00:00:00");x.setDate(x.getDate()+d);return x};
+const fmt=d=>d.toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+const ITEMS=[["chain","Chain lube (O-ring chain)",500,"Spray on the middle of the chain; slack 20–30 mm"],
+["oiltop","Engine oil level top-up",5000,"Bajaj 20W50 BS6, JASO MA2"],
+["oil","Engine oil + filter change",10000,"1st service (about 750 km), then every 10,000 km; 1,300 ml"],
+["valve","Valve tappet clearance",20000,"Check and adjust at 20,000, 40,000, 60,000"],
+["fhose","Fuel pump hoses",20000,"Check; replace if required"],
+["nrb","Swing arm bearing grease",40000,"AP grease"],
+["tb","Throttle body cleaning",5000,"Recommended cleaner only"],
+["air","Air filter + O-ring",20000,"Viscous element"],
+["pads","Brake pads replace",15000,"Check wear every service"],
+["plug","Spark plug replace",30000,"Gap 0.8–0.9 mm"],
+["bf","Brake fluid (DOT 4) + seals",30000,"Check level every service"],
+["fork","Fork oil + seals",30000,"Replace oil and seals in pair"]];
+const TABS=[["track","Tracker"],["sched","Schedule"],["ride","Ride & specs"],["checks","Daily checks"],["faq","FAQ"],["warn","Warnings & warranty"]];
+$("#tabs").innerHTML=TABS.map(t=>`<button data-t="${t[0]}">${t[1]}</button>`).join("");
+function show(t){document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id==="t-"+t));document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t))}
+$("#tabs").onclick=e=>{if(e.target.dataset.t)show(e.target.dataset.t)};
+const win=n=>n==1?[500,750]:[5000*(n-1)-500,5000*(n-1)];
+function renderNext(){
+ const sv=S.logs.filter(l=>l.type==="Service").sort((a,b)=>a.km-b.km),n=sv.length+1;
+ if(n>16){$("#next").innerHTML="<h2>Next service</h2><p>All 16 scheduled services (to 75,000 km) are logged.</p>";return}
+ const [lo,hi]=win(n);let due=null,why="";
+ if(n>=4&&sv.length&&sv[sv.length-1].date){due=addDays(sv[sv.length-1].date,120);why="120 days after last service"}
+ else if(S.sale&&n<4){const d=[0,45,240,360][n];due=addDays(S.sale,d);why=n==1?"30–45 days from sale":d+" days from sale"}
+ const kl=hi-S.odo,dl=due?Math.ceil((due-new Date())/864e5):null;
+ const worst=Math.min(kl,dl===null?1e9:dl*20);
+ const cls=worst<0?"st-bad":worst<=250?"st-wn":"st-ok",txt=worst<0?"Overdue":worst<=250?"Due soon":"On track";
+ $("#next").innerHTML=`<h2>Next: service #${n}${n<4?" (free)":" (paid)"} <span class="tag ${cls}">${txt}</span></h2>
+ <div class="big">${lo.toLocaleString("en-IN")}–${hi.toLocaleString("en-IN")} km</div>
+ <div class="mut">${kl>=0?kl.toLocaleString("en-IN")+" km left":Math.abs(kl).toLocaleString("en-IN")+" km past"} at ${S.odo.toLocaleString("en-IN")} km</div>
+ ${due?`<div style="margin-top:6px">By <b>${fmt(due)}</b> <span class="mut">(${why}; ${dl>=0?dl+" days left":-dl+" days past"})</span></div>`:'<div class="mut" style="margin-top:6px">Enter your sale date to see the date limit.</div>'}
+ <div class="mut" style="margin-top:6px">Tell the dealer your SMS coupon number (UCN) for free services.</div>`}
+function renderItems(){
+ $("#items").innerHTML=ITEMS.map(([id,l,km,nt])=>{const base=S.done[id]||0,K=n=>n.toLocaleString("en-IN");
+  const nx=id==="oil"?(base<500?750:(Math.floor((base+500)/1e4)+1)*1e4):base+km,fr=id==="oil"?(base<500?0:nx-1e4):base;
+  const p=Math.min(100,Math.max(0,S.odo-fr)/(nx-fr)*100),c=p>=100?"var(--bad)":p>=85?"var(--wn)":"var(--ok)",left=nx-S.odo;
+  return `<div class="it"><div class="top"><div><b>${l}</b><div class="mut">${nt}</div></div><button class="btn g" data-d="${id}">Done now</button></div>
+ <div class="bar"><i style="width:${p}%;background:${c}"></i></div><div class="mut">Due by ${K(nx)} km (${base?"last done at "+K(base)+" km":"not done yet"}) · ${left>=0?K(left)+" km left":K(-left)+" km overdue"}</div></div>`}).join("")}
+function renderLogs(){
+ const L=S.logs.map((l,i)=>[l,i]).sort((a,b)=>b[0].km-a[0].km);
+ $("#logs").innerHTML=L.length?"<tr><th>Date</th><th>Km</th><th>Type</th><th>Note</th><th></th></tr>"+L.map(([l,i])=>`<tr><td>${l.date||""}</td><td>${l.km}</td><td>${l.type}</td><td style="white-space:normal">${(l.note||"").replace(/</g,"&lt;")}</td><td><button class="btn g" data-x="${i}">✕</button></td></tr>`).join(""):'<tr><td class="mut">No entries yet.</td></tr>'}
+function renderAll(){$("#sale").value=S.sale;$("#odo").value=S.odo;renderNext();renderItems();renderLogs();if(!mxT)$("#sn").value=Math.min(16,S.logs.filter(l=>l.type==="Service").length+1);renderMx()}
+$("#sale").onchange=e=>{S.sale=e.target.value;S.ts.sale=Date.now();save();renderNext()};
+$("#saveOdo").onclick=()=>{S.odo=+$("#odo").value||0;S.ts.odo=Date.now();save();renderAll()};
+$("#items").onclick=e=>{const d=e.target.dataset.d;if(d){S.done[d]=S.odo;S.dt[d]=Date.now();save();renderItems()}};
+$("#logs").onclick=e=>{const x=e.target.dataset.x;if(x!==undefined){const l=S.logs.splice(+x,1)[0];S.del[l.id]=Date.now();save();renderAll()}};
+$("#addLog").onclick=()=>{const km=+$("#lk").value||S.odo,t=$("#lt").value,date=$("#ld").value||today();
+ S.logs.push({id:nid(),date,km,type:t,note:$("#ln").value});if(km>S.odo){S.odo=km;S.ts.odo=Date.now()}
+ if(t==="Chain lube"){S.done.chain=km;S.dt.chain=Date.now()}if(t==="Oil top-up"){S.done.oiltop=km;S.dt.oiltop=Date.now()}
+ $("#ln").value="";save();renderAll()};
+$("#ld").value=today();
+$("#svcTable").innerHTML="<tr><th>#</th><th>Km window</th><th>Days limit</th><th>Cost</th></tr>"+Array.from({length:16},(_,i)=>{const n=i+1,[a,b]=win(n);return `<tr><td>${n}</td><td>${a.toLocaleString("en-IN")}–${b.toLocaleString("en-IN")}</td><td>${n==1?"30–45 from sale":n==2?"240 from sale":n==3?"360 from sale":"120 from last service"}</td><td>${n<4?"Free":"Paid"}</td></tr>`}).join("");
+$("#itemTable").innerHTML="<tr><th>Item</th><th>Every</th><th>Note</th></tr>"+ITEMS.map(i=>`<tr><td>${i[1]}</td><td>${i[2].toLocaleString("en-IN")} km</td><td>${i[3]}</td></tr>`).join("");
+const SP=[["Engine","249.07 cc, 4-stroke, single cylinder, oil cooled, FI"],["Power","25 PS @ 9,000 rpm"],["Torque","21.5 Nm @ 7,500 rpm"],["Gearbox","6-speed, 1 down 5 up"],["Idle","1,500 ± 100 rpm"],["Fuel tank","14 L (no reserve)"],["Kerb weight","166 kg"],["Ground clearance","165 mm"],["Wheelbase","1,341 mm"],["Front tyre","110/70-17, tubeless"],["Rear tyre","140/70-R17, tubeless"],["Tyre PSI","F 25 · R 28 solo · R 32 pillion"],["Brakes","Disc front and rear, dual-channel ABS"],["Battery","12V 8Ah VRLA"],["Engine oil","20W50 BS6, 1,300 ml"],["Brake fluid","DOT 4"],["Spark plug gap","0.8–0.9 mm"],["Chain slack","20–30 mm"],["Clutch / throttle play","2–3 mm"],["Number plate lamp","12V 5W"],["Bore × stroke","72 × 61.17 mm"],["Compression ratio","9.95 ± 0.3 : 1"],["Lubrication","Wet sump, forced"],["Ignition","DC"],["Length × width × height","1,986 × 804 × 1,070 mm"],["Gross weight","316 kg"],["Oil at overhaul","1,700 ml"],["Lighting","LED head, tail, indicators, DRL, side lamps"],["Display","5-inch colour TFT"],["Horn","12V DC"]];
+$("#specs").innerHTML=SP.map(s=>`<div class="kv"><span>${s[0]}</span><span style="text-align:right">${s[1]}</span></div>`).join("");
+const CK=["Fuel enough for the trip (keep at least 3 L), no leaks","Engine oil level between upper and lower marks","Throttle play 2–3 mm, snaps back closed","Front and rear brake fluid above MIN","Chain slack 20–30 mm and lubed","All lights, indicators and horn work","Clutch lever play 2–3 mm","Steering turns smoothly","Side stand returns fully up","Tyre pressure and tread OK, no cuts","Mirrors set properly"];
+if(S.chk.d!==today())S.chk={d:today(),on:[]};
+$("#chks").innerHTML=CK.map((c,i)=>`<label class="chk"><input type="checkbox" data-c="${i}" ${S.chk.on.includes(i)?"checked":""}><span style="color:var(--tx);font-size:14px">${c}</span></label>`).join("");
+$("#chks").onchange=e=>{const i=+e.target.dataset.c;S.chk.on=S.chk.on.filter(x=>x!==i);if(e.target.checked)S.chk.on.push(i);S.chk.t=Date.now();save()};
+const FAQ=[["Which engine oil, and when to change it?","Bajaj 20W50 BS6 (SAE 20W50, JASO MA2, API SN). Change at the 1st service, then every 10,000 km with a new filter; check or top up every 5,000 km. Refill is 1,300 ml. Check the level daily on level ground through the window on the RH cover."],
+["What tyre pressure should I run?","Front 25 PSI (1.75 kgf/cm²). Rear 28 PSI solo, 32 PSI with a pillion."],
+["I got a puncture. What now?","Tyres are tubeless, so air leaks slowly. Ride gently to a tubeless repair shop. Use plug or filler repair only, never a patch."],
+["How do I check and adjust chain slack?","Measure 20–30 mm in 1st gear or with both wheels on the ground (the service chart says 20–25 mm). Adjuster marks must match on both sides. Lube every 500 km, and clean and lube after every wash and often in monsoon."],
+["How low can I run the fuel?","There is no fuel cock or reserve. Keep at least 3 L in the 14 L tank. Bad or adulterated fuel can clog the injector, pump and catalytic converter, and is not covered by warranty."],
+["How do I measure real mileage?","Fill to the brim, ride about 100 km, refill at the same pump, then divide km run by litres added."],
+["What are the free services and the coupon?","Three free services: 500–750 km (30–45 days), 4,500–5,000 km (240 days), 9,500–10,000 km (360 days). Give the dealer your mobile number; you get a UCN by SMS at the workshop, so quote it."],
+["Bike won’t start. What should I check?","Kill switch on RUN, ignition ON, neutral (or clutch pulled), side stand up, at least 3 L fuel, battery charged. Cranking is limited to 5 s, then 2 s rest, 5 s, 2 s rest, 5 s, 10 s rest to protect the battery."],
+["Why does the engine cut off with the side stand down?","In gear with the stand down it won’t start, and shifting from neutral to 1st with the stand down cuts the engine. Only neutral allows starting."],
+["How do I change ride mode?","Hold the upward toggle 3 s, scroll, press SET with the throttle fully closed. Or Menu → Settings → Ride Mode. Default is Road."],
+["How do Sport Shift and Traction Control work?","Sport Shift lets you shift without the clutch, only in Sport mode. Traction control can be switched off in Sport and Off-road via Menu → Settings → Vehicle; the cluster then shows MTC OFF."],
+["How do I pair my phone?","Install Bajaj Ride Connect, sign up with your mobile number and VIN (you can scan it), turn ignition and kill switch on, and pair with PULSARxxxx. Calls from the cluster work on Android only. Navigation is off by default and starts from the app."],
+["Where are VIN and engine number?","VIN (17 characters) is on the RH side of the steering tube. Engine number (11 characters) is on the LH crankcase near the gear lever."],
+["Where is the battery and how do I look after it?","Under the seat; take off the pillion seat first (key lock), then the rider seat. 12V 8Ah, no topping up. Switch ignition off when parked, don’t add accessories, and disconnect it if the bike sits more than 2 weeks. A low-battery warning means get it charged at once."],
+["How does the USB-C port work?","It is on the tank cover and only gives power with the engine running. Keep the cap closed in rain and washing, and never use it wet."],
+["What is Emergency Brake Alert?","On sudden hard braking the brake lamps flash fast to warn riders behind you."],
+["How do I wash the bike?","Let it cool, then use low pressure (up to 20 bar, 2 m away, no more than 10 s on one spot). Keep water off the air cleaner, throttle body, electrics, oil cooler and muffler. Use neutral pH cleaner and microfibre cloth, then lube the chain. Don’t wax matte paint."],
+["How do I protect the paint?","Wipe spilled petrol around the cap right away. Use muslin or microfibre and mild solution; no abrasive polish, terrycloth or hard rubbing. Don’t hang a metal keychain on the tank."],
+["What about riding in rain and floods?","Avoid deep water. If it stops or gets submerged, don’t restart it; take it to a Bajaj workshop. Water damage and slurry brake wear are excluded from warranty. Foggy lamps after rain are normal."],
+["How do I store it for over 15 days?","Wash it, drain the fuel, put a few drops of oil in the cylinder via the plug hole and crank gently, lift both wheels, oil unpainted metal (not discs or rubber), cover it, raise tyre pressure about 10%, and take the battery out and charge it before reuse."],
+["Where are the toolkit and first-aid kit?","Screwdriver above the battery. Allen key and spanner are tied under the rider seat. First-aid kit is on the RH side of the seat cowl below the pillion seat."],
+["Can I reset the odometer?","No. Trip A, Trip B and Tour Info can be reset from Menu → Information → Trip Info. Lap Timer is off by default."],
+["Is there a roll-over sensor?","Yes. If the bike tilts beyond 60° the sensor cuts the ignition as a safety feature."],
+["How do the headlamp and DRL behave?","The headlamp only comes on with the engine running. With the light switch off the DRL is at high intensity; switching the headlamp on drops the DRL to low intensity."],
+["How do the key, steering lock and fuel cap work?","One key fits ignition, fuel cap and rear seat. To lock steering, turn the bars fully left, push and turn the key to LOCK. Fuel cap: open the flap, turn key clockwise, lift. To close, press down until it clicks. Don’t press the flap or hang a metal keychain."],
+["What should I know about ABS?","Dual-channel ABS (front and rear). Pulsing at the lever or pedal is normal and means ABS is working. Stopping distance can be longer on rough roads; use both brakes, slow down for corners, and never ride with the wheel speed sensor disconnected."],
+["What can Bajaj Ride Connect do?","Accept or reject calls from the switch, show phone battery, signal, missed calls and message alerts, book service, find nearby workshops, store documents (RC, licence, insurance; viewable on the cluster over Bluetooth and Wi-Fi, storage only) and set reminders. First pairing needs location, call-log, SMS and notification permission. Map data is available for 7 years."],
+["What is in the cluster menu?","Information (vehicle info, Trip A/B, Tour info, Lap timer, Documents), Navigation, Music, Calls (DND, favourites, call logs), Settings (day/night, quick access via 3 s down-toggle, favourites, brightness, ride mode, connectivity, Sport Shift and TC, date, time, unit, language, system info, factory reset) and Notifications."],
+["How does the Lap Timer work?","Off by default. Select Lap Timer and press SET. Up toggle starts the timer and marks a lap, the left/right button stops it, down toggle pauses. Lap records keep the best lap and can be reset."],
+["What do the fuel gauge blinks mean?","Sensor open: E, F and the boundary blink. Sensor short: E, F, boundary and all bars blink. Low fuel also shows a warning message."],
+["Where should I keep the cleaning cloth?","In the LH/RH seat cowl, never near the oil cooler, engine, silencer or starter motor."]];
+$("#faq").innerHTML=FAQ.map(f=>`<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join("");
+$("#q").oninput=e=>{const v=e.target.value.toLowerCase();document.querySelectorAll("#faq details").forEach(d=>d.style.display=d.textContent.toLowerCase().includes(v)?"":"none")};
+$("#wl").innerHTML="<tr><th>Indicator</th><th>Meaning</th></tr>"+[["ABS","Lit at ignition, goes off above 5 km/h. If it stays on, ABS has a fault"],["TC (traction control)","Glows while traction control is active. Lit above 5 km/h means a fault"],["MTC OFF","Traction control is switched off"],["Red triangle (generic alarm)","Low battery, low oil pressure, high engine temp or general warning; open Notifications"],["Orange engine (MIL)","Fuel-injection fault. Also on after ignition until the engine starts; get it checked if it stays on"],["Side stand icon","Stand is down"],["Tacho bar blinking","Above 9,000 rpm"],["Blue headlamp icon","High beam on"],["Green lamp icon","Position lamp on"],["Notifications menu","ECU Mode Error, MTC Error, Refuel Required, AUX Battery Low"],["Low oil pressure","On after ignition until the engine starts. If it comes on while riding, stop and go to a workshop"]].map(r=>`<tr><td>${r[0]}</td><td style="white-space:normal">${r[1]}</td></tr>`).join("");
+const od=n=>n%2==1,I=(n,a)=>a.includes(n);
+const MX=[["Water wash",n=>"✓"],["Engine oil",n=>od(n)?"R":"Top-up"],["Oil strainer",n=>od(n)?"CL":""],["Oil filter",n=>od(n)?"R":""],["Air filter + O-ring",n=>I(n,[5,9,13])?"R":""],["Drain tube",n=>"CL"],["Fuel pump hoses",n=>I(n,[5,9,13])?"C,R":""],["Spark plug",n=>I(n,[7,13])?"R":I(n,[3,5,9,11,15])?"CL,A":""],["Valve tappet clearance",n=>I(n,[5,9,13])?"C,A":""],["Breather tube",n=>n>=3?"C,R":""],["EVAP hoses",n=>n>=2?"C,R":""],["Oil cooler",n=>od(n)&&n>=3?"C,CL":""],["Silencer drain hole",n=>n>=3?"CL":""],["Throttle body",n=>n>=2?"CL":""],["Wiring harness",n=>"C,A,T"],["Battery + terminals",n=>"C,A,L,T"],["Ignition switch contacts",n=>n>=3?"CL,L":""],["HT coil connections",n=>n>=2?"C,T":""],["Starter motor + relay",n=>n>=2?"C,T":""],["Fault codes",n=>"C"],["Drive chain",n=>"CL,L,A"],["Steering play",n=>"C,A"],["Steering stem bearing",n=>od(n)&&n>=3?"C,CL,L":""],["Fork oil + seals",n=>I(n,[7,13])?"R":"C,R"],["Swing arm bearing",n=>n==9?"L":""],["Brake pads",n=>n>=4&&n%3==1?"R":"C,R"],["Brake hoses + fluid",n=>I(n,[7,13])?"R (fluid + seals)":"C,A,R"],["Rear sprocket fasteners",n=>od(n)?"C,T":""],["Rear wheel dampers",n=>od(n)&&n>=3?"C,R":""],["Clutch cable play",n=>"C,A"],["Headlight focus",n=>"C,A"],["Lights, switches, horn",n=>"C,A"],["Clutch lever lube",n=>"C,L"],["Tyre pressure",n=>"C,A"],["Mirrors",n=>"C,A"],["Key fasteners",n=>"C,T"],["USB port",n=>"C,R"],["Starter drain hole",n=>n>=2?"C,CL":""],["Fuel tank drain",n=>n>=2?"C,CL":""]];
+let mxT=false;$("#sn").innerHTML=Array.from({length:16},(_,i)=>`<option>${i+1}</option>`).join("");
+$("#sn").onchange=()=>{mxT=true;renderMx()};
+function renderMx(){const n=+$("#sn").value;$("#mx").innerHTML="<tr><th>Item</th><th>Action</th></tr>"+MX.map(([l,f])=>[l,f(n)]).filter(r=>r[1]).map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}
+async function initRemote(){
+ let U=localStorage.getItem("n250gas"),SK=localStorage.getItem("n250tok")||"";
+ const reset=()=>{localStorage.removeItem("n250gas");localStorage.removeItem("n250tok");location.reload()};
+ if(U===null){U=(prompt("Paste your Google Apps Script web app URL (ends with /exec)")||"").trim();
+  if(!/^https:\/\/script\.google\.com\//.test(U)){setSync("Saved on this device only. Tap here to set up sync");$("#sync").style.cursor="pointer";$("#sync").onclick=reset;return}
+  SK=(prompt("Edit token (leave blank for view-only on this device)")||"").trim();
+  localStorage.setItem("n250gas",U);localStorage.setItem("n250tok",SK)}
+ $("#sync").style.cursor="pointer";$("#sync").title="Tap to change sync URL/token";$("#sync").onclick=()=>{if(confirm("Change sync URL and token on this device?"))reset()};
+ ref=SK?{set:async d=>{const r=await fetch(U,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({k:SK,d})});const j=await r.json();if(!j.ok)throw new Error(j.err||r.status)}}:null;
+ const pull=async()=>{try{const r=await fetch(U,{cache:"no-store"});if(!r.ok)throw 0;const rem=await r.json(),has=!!(rem&&rem.ts);
+  if(has){const m=merge(S,rem);if(stable(m)!==stable(S)){S=m;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}renderAll();document.querySelectorAll("#chks input").forEach(x=>x.checked=S.chk.on.includes(+x.dataset.c))}lastSent=stable(rem)}
+  if(SK&&(!has||stable(S)!==stable(rem)))await push();else setSync(SK?"Synced ✓":"View only")}catch(e){setSync("Offline, saved on this device")}};
+ setSync("Connecting…");pull();setInterval(pull,30000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)pull()})}
+show("track");renderAll();initCloud().then(()=>{if(!ref)initRemote()});
+</script></body></html>
